@@ -11,8 +11,6 @@ BuildRequires:	libxml2-devel
 BuildRequires:	openssl-devel
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
-%define		_sbindir		/sbin
-
 %description
 DigiDoc is a generic library implementing the XAdES digital signature
 standard. It allows to create, sign, verify, and modify digidoc XML
