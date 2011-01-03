@@ -1,14 +1,22 @@
+# TODO
+# - use ca-certificates package and drop /usr/share/libdigidoc/certs
+#
+# Conditional build:
+%bcond_with		static_libs	# build static libraries
+
 Summary:	XAdES digital signature standard library
 Name:		libdigidoc
-Version:	2.2.5
+Version:	2.7.0
 Release:	1
-License:	GPL
+License:	LGPL v2+
 Group:		Libraries
-Source0:	http://www.openxades.org/files/%{name}-release-%{version}.tar.gz
-# Source0-md5:	cc07cb0b6fa378ed85d12d0c9a7df07f
-URL:		http://www.openxades.org/
+Source0:	http://esteid.googlecode.com/files/%{name}-%{version}.tar.bz2
+# Source0-md5:	5c00285299b027d6671f9a9ae9bcf433
+URL:		http://code.google.com/p/esteid/
+BuildRequires:	cmake
 BuildRequires:	libxml2-devel
 BuildRequires:	openssl-devel
+BuildRequires:	zlib-devel
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -36,14 +44,14 @@ Static libdigidoc library.
 %setup -q
 
 %build
-%configure
-
-%{__make} -j1
+install -d build
+cd build
+%cmake ..
+%{__make}
 
 %install
 rm -rf $RPM_BUILD_ROOT
-
-%{__make} -j1 install \
+%{__make} -C build install \
 	DESTDIR=$RPM_BUILD_ROOT
 
 %clean
@@ -55,19 +63,20 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %doc AUTHORS ChangeLog NEWS README doc/*.pdf doc/*.xsd
-%attr(755,root,root) %{_bindir}/cdigidoc
-%attr(755,root,root) %{_libdir}/libdigidoc.so.*.*
-%attr(755,root,root) %ghost %{_libdir}/libdigidoc.so.2
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/digidoc.conf
+%attr(755,root,root) %{_libdir}/%{name}.so.*.*
+%attr(755,root,root) %ghost %{_libdir}/%{name}.so.2
+%attr(755,root,root) %{_bindir}/cdigidoc
 %{_datadir}/%{name}
 
 %files devel
 %defattr(644,root,root,755)
-%attr(755,root,root) %{_libdir}/libdigidoc.so
-%{_libdir}/libdigidoc.la
+%attr(755,root,root) %{_libdir}/%{name}.so
 %{_includedir}/%{name}
 %{_pkgconfigdir}/%{name}.pc
 
+%if %{with static_libs}
 %files static
 %defattr(644,root,root,755)
 %{_libdir}/libdigidoc.a
+%endif
