@@ -6,13 +6,13 @@
 
 Summary:	XAdES digital signature standard library
 Name:		libdigidoc
-Version:	2.7.0
+Version:	3.9.1.1191
 Release:	1
 License:	LGPL v2+
 Group:		Libraries
-Source0:	http://esteid.googlecode.com/files/%{name}-%{version}.tar.bz2
-# Source0-md5:	5c00285299b027d6671f9a9ae9bcf433
-URL:		http://code.google.com/p/esteid/
+Source0:	https://installer.id.ee/media/sources/%{name}-%{version}.tar.gz
+# Source0-md5:	ccf88b736dda572b051b7d7fef26984d
+URL:		http://www.ria.ee/
 BuildRequires:	cmake
 BuildRequires:	libxml2-devel
 BuildRequires:	openssl-devel
@@ -62,14 +62,15 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc AUTHORS ChangeLog NEWS README doc/*.pdf doc/*.xsd
+%doc AUTHORS README RELEASE-NOTES.txt
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/digidoc.conf
 %attr(755,root,root) %{_libdir}/%{name}.so.*.*
 %attr(755,root,root) %ghost %{_libdir}/%{name}.so.2
 %attr(755,root,root) %{_bindir}/cdigidoc
-%{_datadir}/%{name}
+%{_mandir}/man1/cdigidoc.1*
 
 %files devel
+%doc doc/*
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/%{name}.so
 %{_includedir}/%{name}
