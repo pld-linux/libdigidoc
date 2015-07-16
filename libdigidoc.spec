@@ -7,7 +7,7 @@
 Summary:	XAdES digital signature standard library
 Name:		libdigidoc
 Version:	3.9.1.1191
-Release:	1
+Release:	2
 License:	LGPL v2+
 Group:		Libraries
 Source0:	https://installer.id.ee/media/sources/%{name}-%{version}.tar.gz
@@ -28,6 +28,7 @@ operations is porivded via PKCS#11.
 %package devel
 Summary:	Header files and development documentation for libdigidoc
 Group:		Development/Libraries
+Requires:	%{name} = %{version}-%{release}
 
 %description devel
 Header files and development documentation for libdigidoc.
@@ -35,7 +36,7 @@ Header files and development documentation for libdigidoc.
 %package static
 Summary:	Static libdigidoc library
 Group:		Development/Libraries
-Requires:	%{name}-devel = %{epoch}:%{version}-%{release}
+Requires:	%{name}-devel = %{version}-%{release}
 
 %description static
 Static libdigidoc library.
