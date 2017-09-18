@@ -12,8 +12,10 @@ Source0:	https://github.com/open-eid/libdigidoc/releases/download/v%{version}/%{
 # Source0-md5:	987a21c44a8b627794b6f810bf15465f
 URL:		https://github.com/open-eid/libdigidoc
 BuildRequires:	cmake
+BuildRequires:	libstdc++-devel
 BuildRequires:	libxml2-devel
 BuildRequires:	openssl-devel
+BuildRequires:	pkgconfig
 BuildRequires:	zlib-devel
 Requires:	ca-certificates
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
