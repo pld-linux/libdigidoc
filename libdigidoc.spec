@@ -4,17 +4,18 @@
 
 Summary:	XAdES digital signature standard library
 Name:		libdigidoc
-Version:	3.9.1.1191
-Release:	2
+Version:	3.10.2
+Release:	1
 License:	LGPL v2+
 Group:		Libraries
-Source0:	https://installer.id.ee/media/sources/%{name}-%{version}.tar.gz
-# Source0-md5:	ccf88b736dda572b051b7d7fef26984d
-URL:		http://www.ria.ee/
+Source0:	https://github.com/open-eid/libdigidoc/releases/download/v%{version}/%{name}-%{version}.tar.gz
+# Source0-md5:	987a21c44a8b627794b6f810bf15465f
+URL:		https://github.com/open-eid/libdigidoc
 BuildRequires:	cmake
 BuildRequires:	libxml2-devel
 BuildRequires:	openssl-devel
 BuildRequires:	zlib-devel
+Requires:	ca-certificates
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -53,6 +54,9 @@ rm -rf $RPM_BUILD_ROOT
 %{__make} -C build install \
 	DESTDIR=$RPM_BUILD_ROOT
 
+# certs come from ca-certificates package
+rm -r $RPM_BUILD_ROOT%{_datadir}/%{name}/*.crt
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -61,7 +65,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc AUTHORS README RELEASE-NOTES.txt
+%doc AUTHORS README.md RELEASE-NOTES.txt
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/digidoc.conf
 %attr(755,root,root) %{_libdir}/%{name}.so.*.*
 %attr(755,root,root) %ghost %{_libdir}/%{name}.so.2
@@ -69,6 +73,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man1/cdigidoc.1*
 
 %files devel
+%defattr(644,root,root,755)
 %doc doc/*
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/%{name}.so
