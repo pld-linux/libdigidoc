@@ -1,5 +1,3 @@
-# TODO
-# - use ca-certificates package and drop /usr/share/libdigidoc/certs
 #
 # Conditional build:
 %bcond_with		static_libs	# build static libraries
