@@ -40,6 +40,7 @@ Group:		Development/Libraries
 Requires:	%{name} = %{version}-%{release}
 Requires:	openssl-devel
 Requires:	libxml2-devel >= 2
+Obsoletes:	libdigidoc-static
 
 %description devel
 Header files for libdigidoc library.
