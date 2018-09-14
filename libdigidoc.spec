@@ -1,16 +1,13 @@
 Summary:	XAdES digital signature standard library
 Summary(pl.UTF-8):	Biblioteka obsługująca standard podpisów cyfrowych XAdES
 Name:		libdigidoc
-# Note: 3.10.3 is tagged, but release tarball is not published;
-# as it doesn't have substantial improvements on Linux and requires git submodules,
-# stick to 3.10.2 for now.
-Version:	3.10.2
-Release:	3
+Version:	3.10.4
+Release:	1
 License:	LGPL v2.1+
 Group:		Libraries
 #Source0Download: https://github.com/open-eid/libdigidoc/releases
 Source0:	https://github.com/open-eid/libdigidoc/releases/download/v%{version}/%{name}-%{version}.tar.gz
-# Source0-md5:	987a21c44a8b627794b6f810bf15465f
+# Source0-md5:	050c73fe991dae0ffe3afec616e20851
 Patch0:		%{name}-cmake.patch
 URL:		https://github.com/open-eid/libdigidoc
 BuildRequires:	cmake >= 2.8
@@ -86,7 +83,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc AUTHORS README.md RELEASE-NOTES.txt
+%doc AUTHORS README.md RELEASE-NOTES.md
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/digidoc.conf
 %attr(755,root,root) %{_libdir}/libdigidoc.so.*.*
 %attr(755,root,root) %ghost %{_libdir}/libdigidoc.so.2
