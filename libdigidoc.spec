@@ -5,7 +5,7 @@ Name:		libdigidoc
 # as it doesn't have substantial improvements on Linux and requires git submodules,
 # stick to 3.10.2 for now.
 Version:	3.10.2
-Release:	2
+Release:	3
 License:	LGPL v2.1+
 Group:		Libraries
 #Source0Download: https://github.com/open-eid/libdigidoc/releases
