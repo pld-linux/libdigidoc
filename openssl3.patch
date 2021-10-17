@@ -1,0 +1,43 @@
+--- libdigidoc-3.10.5/libdigidoc/DigiDocOCSP.c~	2019-11-05 14:17:13.000000000 +0100
++++ libdigidoc-3.10.5/libdigidoc/DigiDocOCSP.c	2021-10-17 11:17:05.318057531 +0200
+@@ -980,7 +980,7 @@
+     BIO_write(mem, tmpbuf, len);
+   } while(len > 0);
+   if(BIO_gets(mem, tmpbuf, 512) <= 0) {
+-    OCSPerr(OCSP_F_OCSP_SENDREQ_BIO,OCSP_R_SERVER_RESPONSE_PARSE_ERROR);
++    OCSPerr(OCSP_F_OCSP_SENDREQ_BIO,OCSP_R_NO_RESPONSE_DATA);
+     goto err;
+   }
+   /* Parse the HTTP response. This will look like this:
+@@ -991,19 +991,19 @@
+   /* Skip to first white space (passed protocol info) */
+   for(p = tmpbuf; *p && !isspace((unsigned char)*p); p++) continue;
+   if(!*p) {
+-    OCSPerr(OCSP_F_OCSP_SENDREQ_BIO,OCSP_R_SERVER_RESPONSE_PARSE_ERROR);
++    OCSPerr(OCSP_F_OCSP_SENDREQ_BIO,OCSP_R_NO_RESPONSE_DATA);
+     goto err;
+   }
+   /* Skip past white space to start of response code */
+   while(*p && isspace((unsigned char)*p)) p++;
+   if(!*p) {
+-    OCSPerr(OCSP_F_OCSP_SENDREQ_BIO,OCSP_R_SERVER_RESPONSE_PARSE_ERROR);
++    OCSPerr(OCSP_F_OCSP_SENDREQ_BIO,OCSP_R_NO_RESPONSE_DATA);
+     goto err;
+   }
+   /* Find end of response code: first whitespace after start of code */
+   for(q = p; *q && !isspace((unsigned char)*q); q++) continue;
+   if(!*q) {
+-    OCSPerr(OCSP_F_OCSP_SENDREQ_BIO,OCSP_R_SERVER_RESPONSE_PARSE_ERROR);
++    OCSPerr(OCSP_F_OCSP_SENDREQ_BIO,OCSP_R_NO_RESPONSE_DATA);
+     goto err;
+   }
+   /* Set end of response code and start of message */ 
+@@ -1019,7 +1019,7 @@
+     for(r = q + strlen(q) - 1; isspace((unsigned char)*r); r--) *r = 0;
+   }
+   if(retcode != 200) {
+-    OCSPerr(OCSP_F_OCSP_SENDREQ_BIO,OCSP_R_SERVER_RESPONSE_ERROR);
++    OCSPerr(OCSP_F_OCSP_SENDREQ_BIO,OCSP_R_NO_RESPONSE_DATA);
+     if(!*q) { 
+       ERR_add_error_data(2, "Code=", p);
+     }
