@@ -10,12 +10,16 @@ Source0:	https://github.com/open-eid/libdigidoc/releases/download/v%{version}/%{
 # Source0-md5:	41194d61e8922aff76336d59d5ca22ac
 Patch0:		openssl3.patch
 URL:		https://github.com/open-eid/libdigidoc
-BuildRequires:	cmake >= 2.8
+BuildRequires:	cmake >= 3.0
+BuildRequires:	doxygen
 BuildRequires:	libxml2-devel >= 2
+# opensc-pkcs11.so
+BuildRequires:	opensc
 BuildRequires:	openssl-devel
 BuildRequires:	pkgconfig
 BuildRequires:	zlib-devel
 Requires:	ca-certificates
+Requires:	opensc
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -37,7 +41,7 @@ Group:		Development/Libraries
 Requires:	%{name} = %{version}-%{release}
 Requires:	openssl-devel
 Requires:	libxml2-devel >= 2
-Obsoletes:	libdigidoc-static
+Obsoletes:	libdigidoc-static < 2.7.0
 
 %description devel
 Header files for libdigidoc library.
@@ -75,6 +79,10 @@ rm -rf $RPM_BUILD_ROOT
 # certs come from ca-certificates package
 %{__rm} $RPM_BUILD_ROOT%{_datadir}/%{name}/*.crt
 
+# packaged as %doc
+%{__rm} -r $RPM_BUILD_ROOT%{_docdir}/libdigidoc/html
+%{__rm} $RPM_BUILD_ROOT%{_docdir}/libdigidoc/{SK-*-GUIDE.*,doxygen-license.txt,mit-license.txt,openssl-license.txt,sample_files_CDD.zip,zlib-license.txt}
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -98,4 +106,4 @@ rm -rf $RPM_BUILD_ROOT
 
 %files apidocs
 %defattr(644,root,root,755)
-%doc doc/{SK-CDD-PRG-GUIDE.pdf,SK-COM-PRG-GUIDE.pdf,sample_files_CDD.zip}
+%doc doc/{SK-CDD-PRG-GUIDE.pdf,SK-COM-PRG-GUIDE.pdf,sample_files_CDD.zip} build/doc/html
