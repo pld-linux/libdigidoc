@@ -1,0 +1,63 @@
+--- libdigidoc-3.10.5/libdigidoc/DigiDocDefs.h~	2019-11-05 14:17:13.000000000 +0100
++++ libdigidoc-3.10.5/libdigidoc/DigiDocDefs.h	2025-08-24 22:37:41.041462078 +0200
+@@ -79,7 +79,7 @@
+ // VS: disabled ecdsa support for FC13 building
+ //#define WITH_ECDSA   1
+ 
+-//#define WITH_DEPRECATED_FUNCTIONS
++#define WITH_DEPRECATED_FUNCTIONS
+ 
+ 
+ // old timestamp struct
+--- libdigidoc-3.10.5/libdigidoc/DigiDocCert.c~	2019-11-05 14:17:13.000000000 +0100
++++ libdigidoc-3.10.5/libdigidoc/DigiDocCert.c	2025-08-24 22:39:59.282270116 +0200
+@@ -1972,8 +1972,8 @@ EXP_OPTION int getCertOwnerCode(const X5
+     if(p) {
+       p = strchr(p+1, ',');
+       if(p) {
+-	strncpy(buf, p+1, 1en);
+-	buf[1en] = 0;
++	strncpy(buf, p+1, len);
++	buf[len] = 0;
+ 	err = ERR_OK;
+       } 
+     } else { // no comma -> no id-code !
+--- libdigidoc-3.10.5/libdigidoc/DigiDocOCSP.c~	2025-08-24 22:40:15.000000000 +0200
++++ libdigidoc-3.10.5/libdigidoc/DigiDocOCSP.c	2025-08-24 22:42:25.943127370 +0200
+@@ -244,7 +244,7 @@ int WriteOCSPResponse(const char* szFile
+   RETURN_IF_NULL_PARAM(resp);
+   if((bout = BIO_new_file(szFileName, "wb")) != NULL) {
+ #if OPENSSL_VERSION_NUMBER > 0x00908000
+-    ASN1_i2d_bio((int (*)(void*, unsigned char**))i2d_OCSP_RESPONSE, bout, (unsigned char*)resp);
++    ASN1_i2d_bio((int (*)(const void*, unsigned char**))i2d_OCSP_RESPONSE, bout, (unsigned char*)resp);
+ #else
+     ASN1_i2d_bio((int (*)())i2d_OCSP_RESPONSE, bout, (unsigned char*)resp);
+ #endif
+@@ -292,7 +292,7 @@ int WriteOCSPRequest(const char* szFileN
+ 	
+   if((bout = BIO_new_file(szFileName, "wb")) != NULL) {
+ #if OPENSSL_VERSION_NUMBER > 0x00908000
+-    ASN1_i2d_bio((int (*)(void*, unsigned char**))i2d_OCSP_RESPONSE, bout, (unsigned char*)req);
++    ASN1_i2d_bio((int (*)(const void*, unsigned char**))i2d_OCSP_RESPONSE, bout, (unsigned char*)req);
+ #else
+     ASN1_i2d_bio((int (*)())i2d_OCSP_RESPONSE, bout, (unsigned char*)req);
+ #endif
+@@ -960,7 +960,7 @@ Content-Length: %d\r\n\r\n";
+     goto err;
+   }
+ #if OPENSSL_VERSION_NUMBER > 0x00908000
+-  retcode = ASN1_i2d_bio((int (*)(void*, unsigned char**))i2d_OCSP_REQUEST, b, (unsigned char*)req);
++  retcode = ASN1_i2d_bio((int (*)(const void*, unsigned char**))i2d_OCSP_REQUEST, b, (unsigned char*)req);
+ #else
+   retcode = ASN1_i2d_bio((int (*)())i2d_OCSP_REQUEST, b, (unsigned char*)req);
+ #endif
+--- libdigidoc-3.10.5/libdigidoc/DigiDocService.c~	2019-11-05 14:17:13.000000000 +0100
++++ libdigidoc-3.10.5/libdigidoc/DigiDocService.c	2025-08-24 22:44:52.070648174 +0200
+@@ -26,6 +26,7 @@
+ #include <libdigidoc/DigiDocObj.h>
+ #include <libdigidoc/DigiDocConvert.h>
+ #include <libdigidoc/DigiDocGen.h>
++#include <libdigidoc/DigiDocSAXParser.h>
+ #include <stdio.h>
+ #include <stdlib.h>
+ #include <memory.h>
